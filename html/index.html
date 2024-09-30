@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ahr999 Index</title>
+    <style>
+        body {
+            font-family: "Times New Roman", Times, serif;
+        }
+        h1 {
+            font-weight: normal;
+            font-size: 2em; /* 例如，假设 h1 的字号是 2em */
+        }
+        p {
+            font-weight: normal;
+            font-size: 1em; /* 例如，假设 p 的默认字号是 1em */
+        }
+        .larger-text {
+            font-weight: normal; /* 取消加粗 */
+            font-size: 1.5em; /* 设定介于 h1 和默认 p 的字号 */
+        }
+    </style>
+    <script>
+        async function fetchData() {
+            try {
+                const response = await fetch('https://ahr999.3geeks.top/get_full_data');
+                const data = await response.json();
+
+                const ahr999Value = parseFloat(data.ahr999);
+                const formattedAhr999 = ahr999Value.toFixed(4);
+                const cost200Day = parseFloat(data.cost_200day).toFixed(2);
+                const expGrowthValuation = parseFloat(data.exp_growth_valuation).toFixed(2);
+
+                document.getElementById('ahr999').innerText = formattedAhr999;
+                document.getElementById('update_time').innerText = data.update_time;
+                document.getElementById('unix_time').innerText = data.unix_time;
+                document.getElementById('price').innerText = data.price;
+                document.getElementById('cost_200day').innerText = cost200Day;
+                document.getElementById('exp_growth_valuation').innerText = expGrowthValuation;
+
+                let rangeText = '';
+                if (ahr999Value < 0.45) {
+                    rangeText = 'Bottom-fishing Range';
+                } else if (ahr999Value < 1.2) {
+                    rangeText = 'Fixed Investment Range';
+                } else {
+                    rangeText = 'Stop Fixed Investment';
+                }
+
+                document.getElementById('title').innerText = `ahr999 Index: ${rangeText}`;
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+
+        window.onload = fetchData;
+    </script>
+</head>
+<body>
+    <h1 id="title">ahr999 Index</h1>
+    <hr>
+    <div>
+        <p class="larger-text">ahr999 &lt; 0.45: Bottom-fishing Range<br> 0.45 &lt; ahr999 &lt; 1.2: Fixed Investment Range<br> ahr999 &gt; 1.2: Stop Fixed Investment</p>
+        <p><strong>ahr999:</strong> <span id="ahr999"></span></p>
+        <p><strong>Update Time:</strong> <span id="update_time"></span></p>
+        <p><strong>Unix Time:</strong> <span id="unix_time"></span></p>
+        <p><strong>Price:</strong> <span id="price"></span></p>
+        <p><strong>Cost 200 Day:</strong> <span id="cost_200day"></span></p>
+        <p><strong>Expected Growth Valuation:</strong> <span id="exp_growth_valuation"></span></p>
+    </div>
+</body>
+</html>
