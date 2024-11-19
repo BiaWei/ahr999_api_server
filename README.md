@@ -15,7 +15,7 @@ The calculation method is:
 
 $$\frac{\text{spot price}}{\text{200days geometric price}} \times \frac{\text{spot price}}{\text{predicted price}}$$
 
-Where $\text{spot price}$ is the spot price, $\text{200days geometric price} is the average fixed investment cost (geometric mean) in the past 200 days, and $\text{predicted price}$ is the exponential prediction valuation;
+Where ${\text{spot price}}$ is the spot price, $\text{200days geometric price}$ is the average fixed investment cost (geometric mean) in the past 200 days, and $\text{predicted price}$ is the exponential prediction valuation;
 The $\text{predicted price}$ is a linear regression fit of the coin age (number of days from 2009/1/3) and the logarithm of the past price $\log_{}{\text(historical price)}$, and then calculated based on the coin age of the day.
 
 When the ahr999 indicator is less than 0.45, it is the bottom-hunting range, which has appeared in 2022/6, 2022/9, 2022/11, and 2023/9.
@@ -125,7 +125,7 @@ ahr999_api_server 是一个基于 Python 的加密货币价格监控和分析工
 
 $$\frac{\text{spot price}}{\text{200days geometric price}} \times \frac{\text{spot price}}{\text{predicted price}}$$
 
-其中$\text{spot price}$为现货价格，$\text{200days geometric price}为过去200天的定投平均成本(几何平均数)，$\text{predicted price}$为指数预测估值；
+其中$\text{spot price}$为现货价格，$\text{200days geometric price}$为过去200天的定投平均成本(几何平均数)，$\text{predicted price}$为指数预测估值；
 $\text{predicted price}$由币龄(从2009/1/3开始到当日的天数)与过去价格的对数$\log_{}{\text(historical price)}$进行线性回归拟合，然后根据当天的币龄计算得出。
 
 ahr999指标在小于0.45时为抄底区间，抄底区间在2022/6、2022/9、2022/11、2023/9均出现过。
