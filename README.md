@@ -13,7 +13,7 @@ ahr999_api_server is a Python-based cryptocurrency price monitoring and analysis
 The Bitcoin ahr999 Hoarding Index is an index created by Weibo user ahr999. Its purpose is to assist Bitcoin fixed investment users to make investment decisions in combination with timing strategies. This index combines the short-term fixed investment yield of Bitcoin with the degree of deviation of Bitcoin price from expected valuation, thereby providing more comprehensive market information.
 The calculation method is:
 
-$\frac{\text{spot price}}{\text{200days geometric price}} \times \frac{\text{spot price}}{\text{predicted price}}$
+$$\frac{\text{spot price}}{\text{200days geometric price}} \times \frac{\text{spot price}}{\text{predicted price}}$$
 
 Where spot_price is the spot price, 200days_geometric_price is the average fixed investment cost (geometric mean) in the past 200 days, and predicted_price is the index prediction valuation;
 The predicted_price is a linear regression fit of the coin age (number of days) and the logarithm of the past price log(historical_price), and then calculated based on the coin age of the day.
@@ -123,7 +123,7 @@ ahr999_api_server 是一个基于 Python 的加密货币价格监控和分析工
 比特币ahr999囤币指标是由微博用户ahr999创造的一项指标，其目的是辅助比特币定投用户结合择机策略做出投资决策。 该指标将比特币的短期定投收益率与比特币价格与预期估值的偏离程度结合起来，从而提供了更全面的市场信息。
 计算方法为：
 
-$\frac{\text{spot price}}{\text{200days geometric price}} \times \frac{\text{spot price}}{\text{predicted price}}$
+$$\frac{\text{spot price}}{\text{200days geometric price}} \times \frac{\text{spot price}}{\text{predicted price}}$$
 
 其中spot_price为现货价格，200days_geometric_price为过去200天的定投平均成本(几何平均数)，predicted_price为指数预测估值；
 predicted_price由币龄(天数)与过去价格的对数log(historical_price)进行线性回归拟合，然后根据当天的币龄计算得出。
