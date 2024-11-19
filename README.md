@@ -15,7 +15,7 @@ The calculation method is:
 
 $$\frac{\text{spot price}}{\text{200days geometric price}} \times \frac{\text{spot price}}{\text{predicted price}}$$
 
-Where spot_price is the spot price, 200days_geometric_price is the average fixed investment cost (geometric mean) in the past 200 days, and predicted_price is the index prediction valuation;
+Where spot_price is the spot price, 200days_geometric_price is the average fixed investment cost (geometric mean) in the past 200 days, and predicted_price is the exponential prediction valuation;
 The predicted_price is a linear regression fit of the coin age (number of days from 2009/1/3) and the logarithm of the past price log(historical_price), and then calculated based on the coin age of the day.
 
 When the ahr999 indicator is less than 0.45, it is the bottom-hunting range, which has appeared in 2022/6, 2022/9, 2022/11, and 2023/9.
