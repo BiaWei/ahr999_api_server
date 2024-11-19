@@ -18,9 +18,12 @@ $$\frac{\text{spot price}}{\text{200days geometric price}} \times \frac{\text{sp
 Where ${\text{spot price}}$ is the spot price, $\text{200days geometric price}$ is the average fixed investment cost (geometric mean) in the past 200 days, and $\text{predicted price}$ is the exponential prediction valuation;
 The $\text{predicted price}$ is a linear regression fit of the coin age (number of days from 2009/1/3) and the logarithm of the past price $\log_{}{\text(historical price)}$, and then calculated based on the coin age of the day.
 
-When the ahr999 indicator is less than 0.45, it is the bottom-hunting range, which has appeared in 2022/6, 2022/9, 2022/11, and 2023/9.
-When the ahr999 indicator is greater than 0.45 and less than 1.2, it is the fixed investment range;
-When the ahr999 indicator is less than 0.45, stop fixed investment and sell in combination with other indicators.
+
+- **ahr999 < 0.45**：Bottom-hunting range, which has appeared in 2022/6, 2022/9, 2022/11, and 2023/9.
+  
+- **0.45 < ahr999 < 1.2**：Fixed investment range;
+
+- **1.2 < ahr999**：Stop fixed investment and sell in combination with other indicators.
 
 ---
 
@@ -128,9 +131,12 @@ $$\frac{\text{spot price}}{\text{200days geometric price}} \times \frac{\text{sp
 其中$\text{spot price}$为现货价格，$\text{200days geometric price}$为过去200天的定投平均成本(几何平均数)，$\text{predicted price}$为指数预测估值；
 $\text{predicted price}$由币龄(从2009/1/3开始到当日的天数)与过去价格的对数$\log_{}{\text(historical price)}$进行线性回归拟合，然后根据当天的币龄计算得出。
 
-ahr999指标在小于0.45时为抄底区间，抄底区间在2022/6、2022/9、2022/11、2023/9均出现过。
-ahr999指标大于0.45、小于1.2时为定投区间；
-ahr999指标在小于0.45时停止定投，结合其他指标进行卖出。
+
+- **ahr999 < 0.45**：抄底区间，抄底区间在2022/6、2022/9、2022/11、2023/9均出现过。
+  
+- **0.45 < ahr999 < 1.2**：定投区间；
+
+- **1.2 < ahr999**：停止定投，结合其他指标进行卖出。
 
 ---
 
