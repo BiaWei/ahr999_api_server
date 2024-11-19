@@ -6,7 +6,8 @@ Get bitcoin prices from OKX, calculate AHR999 index and provide API access, and 
 
 #### 1. 项目简介
 
-AHR999 是一个基于 Python 的加密货币价格监控和分析工具，旨在帮助用户跟踪加密货币价格的变化，并根据一定的算法计算出 AHR999 指数，为用户提供参考和决策依据。
+ahr999_api_server 是一个基于 Python 的加密货币价格监控和分析工具，旨在帮助用户跟踪加密货币价格的变化，并根据一定的算法计算出 AHR999 指数，为用户提供参考和决策依据。
+
 
 ---
 
@@ -64,17 +65,32 @@ price.py：从OKX获取BTC-USD现价
     get_btc_price(inst_id, retries=5, delay=5)：inst_id选择BTC-USDT-SWAP，重试retries与重试延迟默认均为5
 
 savedata.py：通过pandas保存价格信息到csv
-    write_file_3col(file_path, date, price, ahr999)：写入当日的文件到file_path，名称为%Y-%m-%d，第一列为时间、第二列为价格，第三列为ahr999.如果文件不存在或为空，创建文件并写入数据和索引，文件存在且不为空，追加写入数据，不包含索引和表头
-    write_file_4col(file_path, date, price, geometric_mean_price, predicted_price)：第一列为时间%Y-%m-%d，第二列为价格，第三列为要写入的几何平均成本，第四列为预测价格
+    write_daily_file(file_path, date, price, ahr999)：写入当日的文件到file_path，名称为%Y-%m-%d，第一列为时间、第二列为价格，第三列为ahr999.如果文件不存在或为空，创建文件并写入数据和索引，文件存在且不为空，追加写入数据，不包含索引和表头
+    write_overall_file(file_path, date, price, geometric_mean_price, predicted_price)：第一列为时间%Y-%m-%d，第二列为价格，第三列为要写入的几何平均成本，第四列为预测价格
 
-url_test.py：测试订阅，非必需
+test/url_test.py：测试订阅，非必需
     分别测试五个api，可单独运行
 
 
 ```
 ---
 
-#### 4. 使用说明
+#### 4. 文件结构
+
+```
+test/：测试文件
+    
+data/：数据目录，分别存储订阅信息、每日价格信息(每天00:00的价格)、单日的每分钟价格
+
+html/：html前端，挂载在fastapi上呈现网页
+
+legacy(useless)/：已弃用
+    
+```
+
+---
+
+#### 5. 使用说明
 
 ##### 安装依赖
 
@@ -82,17 +98,30 @@ url_test.py：测试订阅，非必需
 pip install -r requirements.txt
 ```
 
+##### 配置
+
+```
+修改html/index.html中的url作为服务器地址
+
+修改test/url_test.py中的server_url作为服务器地址，用于测试
+
+修改test/url_test.py中的bark_url为你的bark url，用于测试
+
+修改notification.py中MESSAGE_TEMPLATE的各个url作为服务器地址，在bark发送通知后可点击通知进入前端html
+```
+
 ##### 启动服务
 
 ```
 python start.py
 ```
-
 ##### API 文档
 
 - **获取完整数据**: `/get_full_data` (GET)
+- **主动获取数据并发送到bark**: `/send_token` (GET)
 - **发送订阅**: `/bark_subscribe` (POST)
 - **取消订阅**: `/bark_unsubscribe` (POST)
+- **获取服务器的所有订阅信息**: `/get_subscribe_data` (GET)
 
-详细 API 文档请参考 [API 文档](#)。
+
 

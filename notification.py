@@ -17,7 +17,7 @@ MESSAGE_TEMPLATE = {
         "sound": "",
         "icon": "https://en.bitcoin.it/w/images/en/2/29/BC_Logo_.png",
         "group": "ahr999Server",
-        "url": "https://ahr999.3geeks.top"
+        "url": "http://127.0.0.1:11452"
     },
     "obtain_single_data": lambda ahr999, get_time: {
         "title": "Successfully obtain data!",
@@ -26,7 +26,7 @@ MESSAGE_TEMPLATE = {
         "sound": "",
         "icon": "https://en.bitcoin.it/w/images/en/2/29/BC_Logo_.png",
         "group": "ahr999Server",
-        "url": "https://ahr999.3geeks.top"
+        "url": "http://127.0.0.1:11452"
     },
     "new_subscribe": lambda new_subscribe_url: {
         "title": "Successfully subscribe!",
@@ -35,7 +35,7 @@ MESSAGE_TEMPLATE = {
         "sound": "",
         "icon": "https://en.bitcoin.it/w/images/en/2/29/BC_Logo_.png",
         "group": "ahr999Server",
-        "url": "https://ahr999.3geeks.top"
+        "url": "http://127.0.0.1:11452"
     },
     "unsubscribe": lambda unsubscribe_url: {
         "title": "Successfully unsubscribe!",
@@ -44,7 +44,7 @@ MESSAGE_TEMPLATE = {
         "sound": "",
         "icon": "https://en.bitcoin.it/w/images/en/2/29/BC_Logo_.png",
         "group": "ahr999Server",
-        "url": "https://ahr999.3geeks.top"
+        "url": "http://127.0.0.1:11452"
     },
 }
 
