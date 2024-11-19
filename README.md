@@ -16,7 +16,7 @@ The calculation method is:
 $$\frac{\text{spot price}}{\text{200days geometric price}} \times \frac{\text{spot price}}{\text{predicted price}}$$
 
 Where spot_price is the spot price, 200days_geometric_price is the average fixed investment cost (geometric mean) in the past 200 days, and predicted_price is the index prediction valuation;
-The predicted_price is a linear regression fit of the coin age (number of days) and the logarithm of the past price log(historical_price), and then calculated based on the coin age of the day.
+The predicted_price is a linear regression fit of the coin age (number of days from 2009/1/3) and the logarithm of the past price log(historical_price), and then calculated based on the coin age of the day.
 
 When the ahr999 indicator is less than 0.45, it is the bottom-hunting range, which has appeared in 2022/6, 2022/9, 2022/11, and 2023/9.
 When the ahr999 indicator is greater than 0.45 and less than 1.2, it is the fixed investment range;
@@ -126,7 +126,7 @@ ahr999_api_server 是一个基于 Python 的加密货币价格监控和分析工
 $$\frac{\text{spot price}}{\text{200days geometric price}} \times \frac{\text{spot price}}{\text{predicted price}}$$
 
 其中spot_price为现货价格，200days_geometric_price为过去200天的定投平均成本(几何平均数)，predicted_price为指数预测估值；
-predicted_price由币龄(天数)与过去价格的对数log(historical_price)进行线性回归拟合，然后根据当天的币龄计算得出。
+predicted_price由币龄(从2009/1/3开始到当日的天数)与过去价格的对数log(historical_price)进行线性回归拟合，然后根据当天的币龄计算得出。
 
 ahr999指标在小于0.45时为抄底区间，抄底区间在2022/6、2022/9、2022/11、2023/9均出现过。
 ahr999指标大于0.45、小于1.2时为定投区间；
