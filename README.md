@@ -40,23 +40,51 @@ The $\text{predicted price}$ is a linear regression fit of the coin age (number 
 #### 3. Functional Modules
 
 ```
-main.py: The main server script. Fetches the AHR999 index every minute and determines whether to send push notifications.
+main.py: The main server script.
+    Fetches the AHR999 index every minute and determines whether to send push notifications.
 
-start.py: Sets up the server and starts it using uvicorn.
+start.py:
+    Sets up the server and starts it using uvicorn.
 
-globals.py: Defines global variables and the Subscription class. url_data: JSON object for Bark push notification information via the send_token interface. Sends a single AHR999 index when the Bark token is provided. Includes message title, content, and icon. price_change_data: JSON object for push notifications when price change thresholds are reached within a minute. Similar structure to url_data. full_data: Full information about the AHR999 index: - "ahr999": AHR999 index value. - "update_time": Last update time in %Y-%m-%d %H:%M:%S format. - "unix_time": Last update time in UNIX timestamp. - "price": Latest BTC price. - "cost_200day": 200-day average investment cost used for calculating the AHR999 index. - "exp_growth_valuation": Exponential growth valuation for calculating the AHR999 index. Subscription class: - url: str. Full subscription URL for the Bark app. - enable_quote_notif: bool. Whether to enable subscription notifications. - quote_threshold: float. Percentage threshold for price change notifications (e.g., 1.0 represents 1%).
+globals.py:
+    Defines global variables and the Subscription class.
+    price_change_data: JSON object for push notifications when price change thresholds are reached within a minute. Similar structure to url_data. 
+    full_data: Full information about the AHR999 index:
+        "ahr999": AHR999 index value.
+        "update_time": Last update time in %Y-%m-%d %H:%M:%S format. 
+        "unix_time": Last update time in UNIX timestamp.
+        "price": Latest BTC price.
+        "cost_200day": 200-day average investment cost used for calculating the AHR999 index.
+        "exp_growth_valuation": Exponential growth valuation for calculating the AHR999 index.
+        
+         
+    Subscription class:
+    url: str. Full subscription URL for the Bark app.
+    enable_quote_notif: bool. Whether to enable subscription notifications.
+    quote_threshold: float. Percentage threshold for price change notifications (e.g., 1.0 represents 1%).
 
-subscription.py: Loads and saves subscription information. load_subscriptions(): Loads Subscription data from local storage into global variables. save_subscriptions(): Saves global Subscription data into a local JSON file.
+subscription.py: Loads and saves subscription information.
+    load_subscriptions(): Loads Subscription data from local storage into global variables.
+    save_subscriptions(): Saves global Subscription data into a local JSON file.
 
-server.py: Defines API endpoints. decode_base64_url(encoded_url: str): Decodes a base64-encoded Bark URL passed via API. send_token(encoded_url: str): GET request. Sends the current AHR999 index to the provided Bark URL. get_full_data(): GET request. Returns the full_data JSON object. bark_subscribe(encoded_url: str, enable_quote_notif: bool = Query(...), quote_threshold: float = Query(...)): POST request for subscription. Takes a base64-encoded URL, a boolean for enabling notifications, and a percentage threshold for price alerts. bark_unsubscribe(encoded_url: str): POST request to unsubscribe, providing only the URL. get_subscribe_data(): GET request. Returns all subscription information stored on the server.
+server.py: Defines API endpoints.
+    decode_base64_url(encoded_url: str): Decodes a base64-encoded Bark URL passed via API.
+    send_token(encoded_url: str): GET request. Sends the current AHR999 index to the provided Bark URL.
+    get_full_data(): GET request. Returns the full_data JSON object. bark_subscribe(encoded_url: str, enable_quote_notif: bool = Query(...), quote_threshold: float = Query(...)): POST request for subscription. Takes a base64-encoded URL, a boolean for enabling notifications, and a percentage threshold for price alerts. bark_unsubscribe(encoded_url: str): POST request to unsubscribe, providing only the URL. get_subscribe_data(): GET request. Returns all subscription information stored on the server.
 
-ahr999.py: Handles AHR999 index calculations. cal_ahr999(current_price, geometric_mean_last_200, predicted_price): Calculates the AHR999 index using the current price, 200-day average investment cost, and exponential growth valuation. predict_price(base_date, get_date): Predicts prices based on the base date and the current date. The base date is an integer starting from "2009/01/03", representing the number of days since that date.
+ahr999.py: Handles AHR999 index calculations.
+    cal_ahr999(current_price, geometric_mean_last_200, predicted_price): Calculates the AHR999 index using the current price, 200-day average investment cost, and exponential growth valuation.
+    predict_price(base_date, get_date): Predicts prices based on the base date and the current date. The base date is an integer starting from "2009/01/03", representing the number of days since that date.
 
-price.py: Fetches the BTC-USDT price from OKX. get_btc_price(inst_id, retries=5, delay=5): Retrieves the BTC-USDT-SWAP price with default retry and delay settings.
+price.py: Fetches the BTC-USDT price from OKX.
+    get_btc_price(inst_id, retries=5, delay=5): Retrieves the BTC-USDT-SWAP price with default retry and delay settings.
 
-savedata.py: Saves price information to a CSV file using pandas. write_daily_file(file_path, date, price, ahr999): Writes daily price and AHR999 data to a file. If the file does not exist or is empty, it creates the file and writes data with headers. If the file exists, appends data without headers or index. write_overall_file(file_path, date, price, geometric_mean_price, predicted_price): Writes overall data, including date, price, geometric mean cost, and predicted price.
+savedata.py: Saves price information to a CSV file using pandas.
+    write_daily_file(file_path, date, price, ahr999): Writes daily price and AHR999 data to a file. If the file does not exist or is empty, it creates the file and writes data with headers. If the file exists, appends data without headers or index. write_overall_file(file_path, date, price, geometric_mean_price, predicted_price): Writes overall data, including date, price, geometric mean cost, and predicted price.
 
 test/url_test.py: Subscription testing (optional). Includes test cases for five API endpoints, which can be run independently.
+
+
 ```
 
 ---
@@ -158,10 +186,7 @@ main.py: 服务器本体，每隔1分钟获取一次ahr999指数并判断是否�
 start.py：设置端口通过uvicorn启动服务器
 
 globals.py：定义全局变量和订阅类
-    url_data：send_token接口对应的bark推送信息json，发送bark token后返回一次ahr999指标
-        分为消息标题、内容、图标
-    price_change_data：价格在一分钟内达到变动阈值的推送信息json
-        内容同上
+
     full_data：ahr999指数的全部信息
             "ahr999": ahr999指数
             "update_time": 上次更新时间%Y-%m-%d %H:%M:%S
