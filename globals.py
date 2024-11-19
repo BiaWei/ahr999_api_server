@@ -17,19 +17,6 @@ class Subscription:
         }
 
 
-
-url_data = {
-    "title": "Successfully obtain data！",
-    "text": "",
-    "icon": "https://en.bitcoin.it/w/images/en/2/29/BC_Logo_.png"
-}
-
-price_change_data = {
-    "title": "Price change！",
-    "text": "",
-    "icon": "https://en.bitcoin.it/w/images/en/2/29/BC_Logo_.png"
-}
-
 full_data = {
     "ahr999": "",
     "update_time": "",

@@ -1,7 +1,3 @@
-subscriptions.json
-run.sh
-port.md
-ahr999.service
 __pycache__
 .idea
-data/historical
+data/subscriptions.json

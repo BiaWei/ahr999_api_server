@@ -2,7 +2,7 @@ import os
 import pandas as pd
 
 
-def write_file_3col(file_path, date, price, ahr999):
+def write_daily_file(file_path, date, price, ahr999):
     data = pd.DataFrame({
         'Date': [date],
         'Price': [price],
@@ -20,7 +20,7 @@ def write_file_3col(file_path, date, price, ahr999):
         data.to_csv(file_path, index=False, mode='a', header=False)
 
 
-def write_file_4col(file_path, date, price, geometric_mean_price, predicted_price):
+def write_overall_file(file_path, date, price, geometric_mean_price, predicted_price):
     data = pd.DataFrame({
         'Date': [date],
         'Price': [price],

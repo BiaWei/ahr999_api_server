@@ -24,7 +24,7 @@
     <script>
         async function fetchData() {
             try {
-                const response = await fetch('https://ahr999.3geeks.top/get_full_data');
+                const response = await fetch('http://127.0.0.1:11452/get_full_data');
                 const data = await response.json();
 
                 const ahr999Value = parseFloat(data.ahr999);
