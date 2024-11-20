@@ -29,11 +29,11 @@ The $\text{predicted price}$ is a linear regression fit of the coin age (number 
 
 #### 2. Features
 
-- **Real-time Price Monitoring**: Monitors real-time price changes of cryptocurrencies like Bitcoin. Once started, it automatically fetches the BTC-USDT price data from OKX every minute, stores it, and calculates the AHR999 index.
+- **Real-time Price Monitoring**: Monitors real-time price changes of Bitcoin. Once started, it automatically fetches the BTC-USDT price data from OKX every minute and records it.
 
 - **AHR999 Index Calculation**: Calculates the AHR999 index using the latest price, 200-day average investment cost, and exponential growth model.
 
-- **Subscription Feature**: Allows users to subscribe to the current AHR999 index and receive notifications about price changes over the past minute through the Bark app.
+- **Subscription Feature**: Allows users to subscribe to the current AHR999 index and receive notifications about price changes over the past minute through the Bark app on iPhone.
 
 ---
 
@@ -70,7 +70,10 @@ subscription.py: Loads and saves subscription information.
 server.py: Defines API endpoints.
     decode_base64_url(encoded_url: str): Decodes a base64-encoded Bark URL passed via API.
     send_token(encoded_url: str): GET request. Sends the current AHR999 index to the provided Bark URL.
-    get_full_data(): GET request. Returns the full_data JSON object. bark_subscribe(encoded_url: str, enable_quote_notif: bool = Query(...), quote_threshold: float = Query(...)): POST request for subscription. Takes a base64-encoded URL, a boolean for enabling notifications, and a percentage threshold for price alerts. bark_unsubscribe(encoded_url: str): POST request to unsubscribe, providing only the URL. get_subscribe_data(): GET request. Returns all subscription information stored on the server.
+    get_full_data(): GET request. Returns the full_data JSON object.
+    bark_subscribe(encoded_url: str, enable_quote_notif: bool = Query(...), quote_threshold: float = Query(...)): POST request for subscription. Takes a base64-encoded URL, a boolean for enabling notifications, and a percentage threshold for price alerts.
+    bark_unsubscribe(encoded_url: str): POST request to unsubscribe, providing only the URL.
+    get_subscribe_data(): GET request. Returns all subscription information stored on the server.
 
 ahr999.py: Handles AHR999 index calculations.
     cal_ahr999(current_price, geometric_mean_last_200, predicted_price): Calculates the AHR999 index using the current price, 200-day average investment cost, and exponential growth valuation.
@@ -170,7 +173,7 @@ $\text{predicted price}$由币龄(从2009/1/3开始到当日的天数)与过去�
 
 #### 2. 功能
 
-- **实时价格监控**：监控比特币等加密货币的实时价格变动。启动后自动从okx.com每分钟获取一次BTC-USDT的价格数据并存储，并计算ahr999指数
+- **实时价格监控**：监控比特币的实时价格变动。启动后自动从okx.com每分钟获取一次BTC-USDT的价格数据并存储，并计算ahr999指数
   
 - **AHR999 指数计算**：根据最新价格、200天定投平均成本和指数增长模型，计算出 AHR999 指数。
 
