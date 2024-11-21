@@ -1,6 +1,4 @@
-# ahr999_api_server
-
-Get bitcoin prices from OKX, calculate the AHR999 index, provide API access, and enable subscription and push notifications via the Bark app on iPhone.
+# AHR999 API Server
 
 ### ahr999_api_server Documentation
 
@@ -74,13 +72,15 @@ server.py: Defines API endpoints.
     bark_subscribe(encoded_url: str, enable_quote_notif: bool = Query(...), quote_threshold: float = Query(...)): POST request for subscription. Takes a base64-encoded URL, a boolean for enabling notifications, and a percentage threshold for price alerts.
     bark_unsubscribe(encoded_url: str): POST request to unsubscribe, providing only the URL.
     get_subscribe_data(): GET request. Returns all subscription information stored on the server.
+    cal_price(ahr999: float): estimate price based on given ahr999, today's growth evaluation and average fixed investment cost in past 200 days.
+    cal_ahr999(price: float): estimate ahr999 based on given price, today's growth evaluation and average fixed investment cost in past 200 days.
 
 ahr999.py: Handles AHR999 index calculations.
     cal_ahr999(current_price, geometric_mean_last_200, predicted_price): Calculates the AHR999 index using the current price, 200-day average investment cost, and exponential growth valuation.
     predict_price(base_date, get_date): Predicts prices based on the base date and the current date. The base date is an integer starting from "2009/01/03", representing the number of days since that date.
 
 price.py: Fetches the BTC-USDT price from OKX.
-    get_btc_price(inst_id, retries=5, delay=5): Retrieves the BTC-USDT-SWAP price with default retry and delay settings.
+    get_btc_price(inst_id, retries=5, delay=5): Fetches the BTC-USDT-SWAP price with retry and delay settings.
 
 savedata.py: Saves price information to a CSV file using pandas.
     write_daily_file(file_path, date, price, ahr999): Writes daily price and AHR999 data to a file. If the file does not exist or is empty, it creates the file and writes data with headers. If the file exists, appends data without headers or index. write_overall_file(file_path, date, price, geometric_mean_price, predicted_price): Writes overall data, including date, price, geometric mean cost, and predicted price.
@@ -97,9 +97,9 @@ test/url_test.py: Subscription testing (optional). Includes test cases for five 
 ```
 test/: Test files.
 
-data/: Directory for storing subscription information, daily prices (price at 00:00), and per-minute prices for a single day.
+data/: Directory for storing subscription information(subscriptions.json), daily prices (price at 00:00)(price.csv), and per-minute prices for a single day (historical/yyyy-mm-dd.csv).
 
-html/: Frontend HTML files rendered via FastAPI.
+html/: Frontend HTML files served by FastAPI.
 
 legacy(useless)/: Deprecated files.
 ```
@@ -123,7 +123,7 @@ Update server_url in test/url_test.py for testing.
 
 Set bark_url in test/url_test.py to your Bark URL for testing.
 
-Adjust the URLs in MESSAGE_TEMPLATE in notification.py to point to the server address. Clicking on the Bark notification will redirect to the frontend HTML.
+Adjust the URLs in MESSAGE_TEMPLATE in notification.py to point to the server address. Clicking the Bark notification on your iPhone will redirect to the frontend HTML.
 
 ```
 
@@ -142,10 +142,6 @@ python start.py
 - **Get All Subscription Data**: `/get_subscribe_data` (GET)
 
 
-
-
-# ahr999_api_server
-Get bitcoin prices from OKX, calculate AHR999 index and provide API access, and can be subscribed and pushed through bark app on iphone
 ### ahr999_api_server 项目文档
 
 ---
@@ -213,6 +209,8 @@ server.py：定义api接口
     bark_subscribe(encoded_url: str, enable_quote_notif: bool = Query(...), quote_threshold: float = Query(...))：POST请求订阅，给出base64编码的url、启用订阅bool、提醒阈值百分比
     bark_unsubscribe(encoded_url: str)：POST请求取消订阅，仅给出URL
     get_subscribe_data()：GET请求，直接返回所有用户的订阅信息
+    cal_price(ahr999: float): 根据给定的ahr999、今天的指数增长估值和过去200天的平均定投成本来估算价格
+    cal_ahr999(price: float): 根据给定的价格、今天的指数增长估值和过去200天的平均定投成本来估算ahr999
 
 ahr999.py：计算ahr999指数相关
     cal_ahr999(current_price, geometric_mean_last_200, predicted_price):通过现价、200天定投平均成本、指数预测价格计算ahr999指数
@@ -237,7 +235,7 @@ test/url_test.py：测试订阅，非必需
 ```
 test/：测试文件
     
-data/：数据目录，分别存储订阅信息、每日价格信息(每天00:00的价格)、单日的每分钟价格
+data/：数据目录，分别存储订阅信息subscriptions.json、每日价格信息(每天00:00的价格)price.csv、单日的每分钟价格historical/yyyy-mm-dd.csv
 
 html/：html前端，挂载在fastapi上呈现网页
 
