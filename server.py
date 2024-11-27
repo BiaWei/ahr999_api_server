@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import FileResponse
-import requests
+import os
 import globals
 import subscribe
 import base64
@@ -8,10 +8,12 @@ import logging
 import sys
 import notification
 from ahr999 import cal_ahr999
-from urllib.parse import quote
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # 项目根目录
+OVERALL_PRICE_PATH = os.path.join(BASE_DIR, "data/price.csv")
 
 router = APIRouter()
 
@@ -111,6 +113,18 @@ def bark_unsubscribe(encoded_url: str):
 @router.get("/get_subscribe_data")
 def get_subscribe_data():
     return globals.subscriptions
+
+
+@router.get("/download/history_price", response_description="Download a fixed file")
+async def download_file():
+    """
+    提供固定文件的下载
+    """
+    if not os.path.exists(OVERALL_PRICE_PATH):
+        return {"error": "File not found"}  # 如果文件不存在，返回错误信息
+
+    # 返回文件响应
+    return FileResponse(OVERALL_PRICE_PATH, filename="price.csv", media_type="application/octet-stream")
 
 
 # calculate ahr999 from input bitcoin price
