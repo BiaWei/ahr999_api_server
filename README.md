@@ -127,6 +127,8 @@ Set bark_url in test/url_test.py to your Bark URL for testing.
 
 Adjust the URLs in MESSAGE_TEMPLATE in notification.py to point to the server address. Clicking the Bark notification on your iPhone will redirect to the frontend HTML.
 
+When you clone this repo, you don't have the price data of today to calculate average cost in past 200 days. Use `sync.py` to download data from my server.
+
 ```
 
 ##### Start the Server
