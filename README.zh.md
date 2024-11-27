@@ -86,6 +86,8 @@ savedata.py：通过pandas保存价格信息到csv
 test/url_test.py：测试订阅，非必需
     分别测试五个api，可单独运行
 
+sync.py：同步历史数据
+
 
 ```
 ---
@@ -123,6 +125,8 @@ pip install -r requirements.txt
 修改test/url_test.py中的bark_url为你的bark url，用于测试
 
 修改notification.py中MESSAGE_TEMPLATE的各个url作为服务器地址，在bark发送通知后可点击通知进入前端html
+
+如果你clone下了这个repo但没有过去几天的历史价格，你可以使用`sync.py`从我的服务器下载
 ```
 
 ##### 启动服务
