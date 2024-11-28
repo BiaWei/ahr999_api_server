@@ -8,6 +8,8 @@ import time
 logging.basicConfig(stream=sys.stdout, level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
+# Your public server address here
+SERVER_URL = "https://xxx.xxx.xxx"
 
 MESSAGE_TEMPLATE = {
     "price_change": lambda price_change_str, price, ahr999: {
@@ -15,36 +17,36 @@ MESSAGE_TEMPLATE = {
         "body": f"Max price change {price_change_str}% in past 15 minutes, the current price is ${price}, ahr999 is {ahr999:.4f}.",
         "badge": 1,
         "sound": "",
-        "icon": "https://en.bitcoin.it/w/images/en/2/29/BC_Logo_.png",
+        "icon": f"{SERVER_URL}/favicon.ico",
         "group": "ahr999Server",
-        "url": "http://127.0.0.1:11452"
+        "url": SERVER_URL
     },
     "obtain_single_data": lambda ahr999, get_time: {
         "title": "Successfully obtain data!",
         "body": f"ahr999: {ahr999:.4f}\r\nLast update: {get_time.replace('/', '-')}",
         "badge": 1,
         "sound": "",
-        "icon": "https://en.bitcoin.it/w/images/en/2/29/BC_Logo_.png",
+        "icon": f"{SERVER_URL}/favicon.ico",
         "group": "ahr999Server",
-        "url": "http://127.0.0.1:11452"
+        "url": SERVER_URL
     },
     "new_subscribe": lambda new_subscribe_url: {
         "title": "Successfully subscribe!",
         "body": f"url:{new_subscribe_url}",
         "badge": 1,
         "sound": "",
-        "icon": "https://en.bitcoin.it/w/images/en/2/29/BC_Logo_.png",
+        "icon": f"{SERVER_URL}/favicon.ico",
         "group": "ahr999Server",
-        "url": "http://127.0.0.1:11452"
+        "url": SERVER_URL
     },
     "unsubscribe": lambda unsubscribe_url: {
         "title": "Successfully unsubscribe!",
         "body": f"url:{unsubscribe_url}",
         "badge": 1,
         "sound": "",
-        "icon": "https://en.bitcoin.it/w/images/en/2/29/BC_Logo_.png",
+        "icon": f"{SERVER_URL}/favicon.ico",
         "group": "ahr999Server",
-        "url": "http://127.0.0.1:11452"
+        "url": SERVER_URL
     },
 }
 
@@ -193,7 +195,7 @@ def send_unsubscribe_notification(bark_url):
 if __name__ == "__main__":
 
     # your bark url
-    bark_url = "https://api.day.app/XXXXXXXXXXXXXXXXX/"
+    bark_url = "https://api.day.app/XXXXXXXXXXXX/"
 
     try:
         result = send_price_change_notification(-1.5, 90000, 1.4, bark_url)

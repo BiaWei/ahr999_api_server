@@ -13,7 +13,8 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO, format='%(asctime)s -
 logger = logging.getLogger(__name__)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # 项目根目录
-OVERALL_PRICE_PATH = os.path.join(BASE_DIR, "data/price.csv")
+OVERALL_PRICE_PATH = os.path.join(BASE_DIR, "data", "price.csv")
+ICON_PATH = os.path.join(BASE_DIR, "html", "favicon.ico")
 
 router = APIRouter()
 
@@ -110,9 +111,9 @@ def bark_unsubscribe(encoded_url: str):
 
 # Get all subscribed bark url
 # You can delete this from being leaked
-@router.get("/get_subscribe_data")
-def get_subscribe_data():
-    return globals.subscriptions
+# @router.get("/get_subscribe_data")
+# def get_subscribe_data():
+#     return globals.subscriptions
 
 
 @router.get("/download/history_price", response_description="Download a fixed file")
@@ -126,6 +127,10 @@ async def download_file():
     # 返回文件响应
     return FileResponse(OVERALL_PRICE_PATH, filename="price.csv", media_type="application/octet-stream")
 
+
+@router.get("/favicon.ico")
+async def get_favicon():
+    return FileResponse(ICON_PATH, media_type="image/x-icon")
 
 # calculate ahr999 from input bitcoin price
 @router.get("/cal_ahr999")
