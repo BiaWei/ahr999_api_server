@@ -44,7 +44,7 @@ if __name__ == "__main__":
     get_response = get_request(get_url, get_params)
     print("send_token result:", get_response)
 
-    # /get_full_datac
+    # /get_full_data
     get_url = f"{server_url}get_full_data"
     get_response = get_request(get_url)
     print("get_full_data result:", get_response)
