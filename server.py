@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Form
 from fastapi.responses import FileResponse
 import os
 import globals
@@ -54,9 +54,16 @@ def get_full_data():
 async def read_root():
     return FileResponse("html/index.html")
 
+@router.get("/subscribe", response_class=FileResponse)
+async def read_subscribe_page():
+    return FileResponse("html/subscribe.html")
+
 
 @router.post("/bark_subscribe")
-def bark_subscribe(encoded_url: str, enable_quote_notif: bool = Query(...), quote_threshold: float = Query(...)):
+def bark_subscribe(encoded_url: str = Form(...),
+                   enable_quote_notif: bool = Form(...),
+                   quote_threshold: float = Form(...)):
+
     new_subscribe_url = decode_base64_url(encoded_url)
     subscription_exists = False
 
@@ -92,7 +99,7 @@ def bark_subscribe(encoded_url: str, enable_quote_notif: bool = Query(...), quot
 
 
 @router.post("/bark_unsubscribe")
-def bark_unsubscribe(encoded_url: str):
+def bark_unsubscribe(encoded_url: str = Form(...)):
     url = decode_base64_url(encoded_url)
     for sub in globals.subscriptions:
         if sub.url == url:
@@ -105,6 +112,17 @@ def bark_unsubscribe(encoded_url: str):
             except Exception as e:
                 logger.error(f"Unsubscribe success, but failed to send notification! URL: {url}, error: {e}")
                 raise HTTPException(status_code=500, detail=str(e))
+
+    raise HTTPException(status_code=404, detail="URL not found in subscriptions")
+
+
+
+@router.post("/bark_query")
+def bark_query(encoded_url: str = Form(...)):
+    url = decode_base64_url(encoded_url)
+    for sub in globals.subscriptions:
+        if sub.url == url:
+            return {"data": sub.to_dict(), "status_code": 200}
 
     raise HTTPException(status_code=404, detail="URL not found in subscriptions")
 

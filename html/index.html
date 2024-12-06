@@ -1,56 +1,130 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-US">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ahr999 Index</title>
+    <title>AHR999 Index Analysis</title>
     <style>
+        :root {
+            --primary-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --bg-color: #f4f4f4;
+            --text-color: #333;
+            --secondary-color: #666;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: "Times New Roman", Times, serif;
+            font-family: var(--primary-font);
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
         }
+
+        .container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
         h1 {
-            font-weight: normal;
-            font-size: 2em; /* 例如，假设 h1 的字号是 2em */
+            text-align: center;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+            font-weight: 500;
         }
-        p {
-            font-weight: normal;
-            font-size: 1em; /* 例如，假设 p 的默认字号是 1em */
+
+        .data-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
         }
-        .larger-text {
-            font-weight: normal; /* 取消加粗 */
-            font-size: 1.5em; /* 设定介于 h1 和默认 p 的字号 */
+
+        .data-row label {
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+
+        .range-indicator {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+        }
+
+        .footer {
+            text-align: center;
+            color: var(--secondary-color);
+            font-size: 0.8rem;
+            margin-top: 20px;
+        }
+
+        .footer a {
+            color: var(--secondary-color);
+            text-decoration: underline;
         }
     </style>
     <script>
         async function fetchData() {
             try {
-                const response = await fetch('http://127.0.0.1:11452/get_full_data');
+                const response = await fetch('https://ahr999.3geeks.top/get_full_data');
                 const data = await response.json();
 
                 const ahr999Value = parseFloat(data.ahr999);
-                const formattedAhr999 = ahr999Value.toFixed(4);
-                const cost200Day = parseFloat(data.cost_200day).toFixed(2);
-                const expGrowthValuation = parseFloat(data.exp_growth_valuation).toFixed(2);
+                const dataElements = {
+                    'ahr999': { format: v => v.toFixed(4) },
+                    'update_time': { format: v => v },
+                    'unix_time': { format: v => v },
+                    'price': { format: v => v },
+                    'cost_200day': { format: v => v.toFixed(2) },
+                    'exp_growth_valuation': { format: v => v.toFixed(2) }
+                };
 
-                document.getElementById('ahr999').innerText = formattedAhr999;
-                document.getElementById('update_time').innerText = data.update_time;
-                document.getElementById('unix_time').innerText = data.unix_time;
-                document.getElementById('price').innerText = data.price;
-                document.getElementById('cost_200day').innerText = cost200Day;
-                document.getElementById('exp_growth_valuation').innerText = expGrowthValuation;
+                Object.entries(dataElements).forEach(([key, { format }]) => {
+                    const element = document.getElementById(key);
+                    if (element) element.textContent = format(data[key]);
+                });
 
-                let rangeText = '';
-                if (ahr999Value < 0.45) {
-                    rangeText = 'Bottom-fishing Range';
-                } else if (ahr999Value < 1.2) {
-                    rangeText = 'Fixed Investment Range';
-                } else {
-                    rangeText = 'Stop Fixed Investment';
-                }
-
-                document.getElementById('title').innerText = `ahr999 Index: ${rangeText}`;
+                const rangeInfo = determineRangeInfo(ahr999Value);
+                document.getElementById('title').textContent = `AHR999 Index: ${rangeInfo.text}`;
+                document.getElementById('range-description').textContent = rangeInfo.description;
+                document.getElementById('range-container').className = `range-indicator ${rangeInfo.className}`;
             } catch (error) {
                 console.error('Error fetching data:', error);
+            }
+        }
+
+        function determineRangeInfo(ahr999Value) {
+            if (ahr999Value < 0.45) {
+                return {
+                    text: 'Bottom Fishing Range',
+                    description: 'When AHR999 < 0.45, the market is at the bottom, suitable for large-scale or gradual investment',
+                    className: 'bottom-range'
+                };
+            } else if (ahr999Value < 1.2) {
+                return {
+                    text: 'Fixed Investment Range',
+                    description: 'When 0.45 < AHR999 < 1.2, continue stable fixed investment to maintain average cost',
+                    className: 'investment-range'
+                };
+            } else {
+                return {
+                    text: 'Stop Fixed Investment Range',
+                    description: 'When AHR999 > 1.2, the market may be overvalued, suggest pausing fixed investment or reducing investment proportion',
+                    className: 'stop-range'
+                };
             }
         }
 
@@ -58,16 +132,47 @@
     </script>
 </head>
 <body>
-    <h1 id="title">ahr999 Index</h1>
-    <hr>
-    <div>
-        <p class="larger-text">ahr999 &lt; 0.45: Bottom-fishing Range<br> 0.45 &lt; ahr999 &lt; 1.2: Fixed Investment Range<br> ahr999 &gt; 1.2: Stop Fixed Investment</p>
-        <p><strong>ahr999:</strong> <span id="ahr999"></span></p>
-        <p><strong>Update Time:</strong> <span id="update_time"></span></p>
-        <p><strong>Unix Time:</strong> <span id="unix_time"></span></p>
-        <p><strong>Price:</strong> <span id="price"></span></p>
-        <p><strong>Cost 200 Day:</strong> <span id="cost_200day"></span></p>
-        <p><strong>Expected Growth Valuation:</strong> <span id="exp_growth_valuation"></span></p>
+    <div class="container">
+        <h1 id="title">AHR999 Index Analysis</h1>
+
+        <div id="range-container" class="range-indicator">
+            <p id="range-description"></p>
+        </div>
+
+        <div class="data-row">
+            <label>AHR999:</label>
+            <span id="ahr999"></span>
+        </div>
+        <div class="data-row">
+            <label>Update Time:</label>
+            <span id="update_time"></span>
+        </div>
+        <div class="data-row">
+            <label>Unix Time:</label>
+            <span id="unix_time"></span>
+        </div>
+        <div class="data-row">
+            <label>Current Price:</label>
+            <span id="price"></span>
+        </div>
+        <div class="data-row">
+            <label>200-Day Cost:</label>
+            <span id="cost_200day"></span>
+        </div>
+        <div class="data-row">
+            <label>Expected Growth Valuation:</label>
+            <span id="exp_growth_valuation"></span>
+        </div>
+    </div>
+
+    <div class="footer">
+        Subscribe in Bark App: 
+        <a href="http://127.0.0.1:11452/subscribe" target="_blank">Subscribe</a>
+    </div>
+
+    <div class="footer">
+        Learn more about the AHR999 Index at 
+        <a href="http://127.0.0.1:11452" target="_blank">AHR999</a>
     </div>
 </body>
 </html>

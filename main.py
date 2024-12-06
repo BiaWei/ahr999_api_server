@@ -63,6 +63,12 @@ def update_price_data():
         # print(f"Now: {now}")
         # 检查是否达到了目标时间
         if now.second == 0:
+
+            for sub in globals.subscriptions:
+                print(type(sub))
+                print(sub)
+
+
             # 获取当前btc价格
             latest_btc_price = price.get_btc_price(inst_id)
             if latest_btc_price is None:

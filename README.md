@@ -170,7 +170,7 @@ python start.py
 **Description**: Subscribes to the Bark push notification service.  
 **Parameters**:  
 
-- `encoded_url`: Base64-encoded Bark push URL in the format "http://aa.bb.cc/xxxxxxxx/"  
+- `encoded_url`: Base64-encoded Bark push URL, and the original URL is in the format "http://aa.bb.cc/xxxxxxxx/"  
 - `enable_quote_notif`: Boolean value to enable or disable price change notifications  
 - `quote_threshold`: Float value representing the price change threshold  
 
@@ -189,7 +189,7 @@ python start.py
 **Description**: Cancels the subscription to Bark push notifications.  
 **Parameters**:  
 
-- `encoded_url`: Base64-encoded Bark push URL in the format "http://aa.bb.cc/xxxxxxxx/"  
+- `encoded_url`: Base64-encoded Bark push URL, and the original URL is in the format "http://aa.bb.cc/xxxxxxxx/"  
 
 **Example Response**:
 
