@@ -81,34 +81,25 @@ $$
 
 ### 4. 文件结构
 
-
-
-```
 test/ # 测试文件
 data/ # 数据目录
- └── subscriptions.json # 订阅信息
- └── price.csv # 每日价格信息
- └── historical/ # 单日的每分钟价格
+    └── subscriptions.json # 订阅信息
+    └── price.csv # 每日价格信息
+    └── historical/ # 单日的每分钟价格
 html/ # 前端 HTML
 legacy/ # 已弃用
-    
-```
 
 ---
-
 
 ### 5. 使用说明
 
 #### 安装依赖
 
 ```bash
-
 pip install -r requirements.txt
-
 ```
 
-##### 配置
-
+#### 配置
 
 - 修改html/index.html中的url作为服务器地址
 
@@ -120,20 +111,122 @@ pip install -r requirements.txt
 
 - 如果你clone下了这个repo但没有过去几天的历史价格，你可以使用`sync.py`从我的服务器下载
 
-
-##### 启动服务
+#### 启动服务
 
 ```
 python start.py
 ```
 
-##### API 文档
-
-- **获取完整数据**: `/get_full_data` (GET)
-- **主动获取数据并发送到bark**: `/send_token` (GET)
-- **发送订阅**: `/bark_subscribe` (POST)
-- **取消订阅**: `/bark_unsubscribe` (POST)
-- **获取服务器的所有订阅信息**: `/get_subscribe_data` (GET)
+#### API 文档
 
 
+- **获取完整数据**: /get_full_data (GET)
+
+**Method**: GET
+**描述**: 获取服务器最新的完整数据，包括 AHR999 指数、价格、更新时间等
+**参数**: 无
+**返回示例**:
+
+```json
+{
+    "ahr999": "1.234",
+    "update_time": "2024-01-01 12:34:56",
+    "unix_time": "1704096896000",
+    "price": "80000",
+    "cost_200day": "65000",
+    "exp_growth_valuation": "90000"
+}
+```
+- **主动获取数据并发送到bark**: /send_token (GET)
+
+**Method**: GET
+**描述**: 手动触发获取最新数据并通过Bark推送通知
+**参数**:
+
+encoded_url: Base64编码的Bark推送URL
+
+
+返回示例:
+
+```json
+{
+    "message": "Notification sent successfully",
+    "status_code": 200
+}
+```
+- **发送订阅**: /bark_subscribe (POST)
+
+**Method**: POST
+**描述**: 订阅Bark推送服务
+**参数**:
+
+encoded_url: Base64编码的Bark推送URL，URL格式为"http://aa.bb.cc/xxxxxxxx/"
+enable_quote_notif: 是否启用价格通知（布尔值）
+quote_threshold: 价格变动阈值（浮点数）
+
+
+返回示例:
+
+```json
+{
+    "message": "Subscribe successfully", 
+    "status_code": 200
+}
+```
+- **取消订阅**: /bark_unsubscribe (POST)
+
+**Method**: POST
+**描述**: 取消Bark推送订阅
+**参数**:
+
+encoded_url: Base64编码的Bark推送URL，URL格式为"http://aa.bb.cc/xxxxxxxx/"
+
+
+返回示例:
+
+```json
+{
+    "message": "Unsubscribe successful", 
+    "status_code": 200
+}
+```
+
+
+- **通过价格计算AHR999**： /cal_ahr999
+
+**Method**: GET
+**描述**: 根据输入的比特币价格计算AHR999指数
+**参数**:
+
+price: 比特币价格（浮点数）
+
+
+返回示例:
+
+```json
+{
+    "ahr999": 1.2345
+}
+```
+- **通过AHR999计算价格** /cal_price
+
+**Method**: GET
+**描述**: 根据AHR999指数计算对应的比特币价格
+**参数**:
+
+ahr999: AHR999指数（浮点数）
+
+
+返回示例:
+
+```json
+{
+    "price": 42000.0
+}
+```
+- **注意事项**
+
+- 所有涉及Bark推送的接口都需要对Bark URL进行Base64编码
+- 接口返回的状态码和消息可以帮助判断请求是否成功
+- 订阅接口支持更新已存在的订阅信息
 

@@ -127,10 +127,113 @@ python start.py
 ```
 
 
-### API Endpoints
+#### API Documentation
 
-- **Get Full Data**: `/get_full_data` (GET)
-- **Fetch Data and Send via Bark**: `/send_token` (GET)
-- **Subscribe**: `/bark_subscribe` (POST)
-- **Unsubscribe**: `/bark_unsubscribe` (POST)
-- **Get All Subscription Data**: `/get_subscribe_data` (GET)
+- **Get Full Data**: /get_full_data (GET)
+
+**Method**: GET  
+**Description**: Retrieves the latest complete data from the server, including the AHR999 index, price, update time, etc.  
+**Parameters**: None  
+**Example Response**:
+
+```json
+{
+    "ahr999": "1.234",
+    "update_time": "2024-01-01 12:34:56",
+    "unix_time": "1704096896000",
+    "price": "80000",
+    "cost_200day": "65000",
+    "exp_growth_valuation": "90000"
+}
+```
+
+- **Manually Fetch Data and Send via Bark**: /send_token (GET)
+
+**Method**: GET  
+**Description**: Triggers the manual fetch of the latest data and sends a notification via Bark.  
+**Parameters**:  
+
+- `encoded_url`: Base64-encoded Bark push URL  
+
+**Example Response**:
+
+```json
+{
+    "message": "Notification sent successfully",
+    "status_code": 200
+}
+```
+
+- **Subscribe to Notifications**: /bark_subscribe (POST)
+
+**Method**: POST  
+**Description**: Subscribes to the Bark push notification service.  
+**Parameters**:  
+
+- `encoded_url`: Base64-encoded Bark push URL in the format "http://aa.bb.cc/xxxxxxxx/"  
+- `enable_quote_notif`: Boolean value to enable or disable price change notifications  
+- `quote_threshold`: Float value representing the price change threshold  
+
+**Example Response**:
+
+```json
+{
+    "message": "Subscribe successfully", 
+    "status_code": 200
+}
+```
+
+- **Unsubscribe from Notifications**: /bark_unsubscribe (POST)
+
+**Method**: POST  
+**Description**: Cancels the subscription to Bark push notifications.  
+**Parameters**:  
+
+- `encoded_url`: Base64-encoded Bark push URL in the format "http://aa.bb.cc/xxxxxxxx/"  
+
+**Example Response**:
+
+```json
+{
+    "message": "Unsubscribe successful", 
+    "status_code": 200
+}
+```
+
+- **Calculate AHR999 from Price**: /cal_ahr999 (GET)
+
+**Method**: GET  
+**Description**: Calculates the AHR999 index based on the given Bitcoin price.  
+**Parameters**:  
+
+- `price`: Bitcoin price (float)  
+
+**Example Response**:
+
+```json
+{
+    "ahr999": 1.2345
+}
+```
+
+- **Calculate Price from AHR999**: /cal_price (GET)
+
+**Method**: GET  
+**Description**: Calculates the Bitcoin price based on the AHR999 index.  
+**Parameters**:  
+
+- `ahr999`: AHR999 index (float)  
+
+**Example Response**:
+
+```json
+{
+    "price": 42000.0
+}
+```
+
+- **Notes**
+
+1. All APIs involving Bark push notifications require the Bark URL to be Base64 encoded.  
+2. The returned status code and message can help determine whether the request was successful.  
+3. The subscription API supports updating existing subscription information.
